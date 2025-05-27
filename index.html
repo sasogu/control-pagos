@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Pagos</title>
+    <link rel="stylesheet" href="./src/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Control de Pagos</h1>
+        <form id="payment-form">
+            <input type="text" id="description" placeholder="Descripción">
+            <input type="number" id="amount" placeholder="Monto" required value="10">
+           <select id="person" required>
+    <option value="" disabled selected>Selecciona persona</option>
+</select>
+            <select id="type">
+                <option value="entrada">Entrada</option>
+                <option value="salida">Salida</option>
+            </select>
+            <select id="month">
+                <option value="01">Enero</option>
+                <option value="02">Febrero</option>
+                <option value="03">Marzo</option>
+                <option value="04">Abril</option>
+                <option value="05">Mayo</option>
+                <option value="06">Junio</option>
+                <option value="07">Julio</option>
+                <option value="08">Agosto</option>
+                <option value="09">Septiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+            </select>
+            <button type="submit">Agregar Pago</button>
+        </form>
+        <h2>Registro de Pagos</h2>
+        <ul id="payment-list"></ul>
+        <button type="button" id="backup-btn" class="backup-btn">Descargar copia de seguridad</button>
+        <button type="button" id="restore-btn" class="restore-btn">Restaurar copia de seguridad</button>
+        <input type="file" id="restore-file" accept=".json" style="display:none">
+         <div id="person-manager">
+            <input type="text" id="new-person" placeholder="Añadir persona">
+            <button type="button" id="add-person-btn">Añadir</button>
+            <ul id="person-list"></ul>
+    </div>
+    <script src="./src/app.js"></script>
+</body>
+</html>
