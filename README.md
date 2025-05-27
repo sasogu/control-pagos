@@ -9,33 +9,20 @@ El proyecto tiene la siguiente estructura de archivos:
 ```
 control-pagos
 ├── src
-│   ├── index.html        # Estructura principal de la aplicación
 │   ├── app.js           # Lógica de la aplicación
 │   └── styles.css       # Estilos de la aplicación
-├── package.json          # Configuración de npm
-└── README.md             # Documentación del proyecto
+├── index.html           # Estructura principal de la aplicación
+├── manifest.json         # Configuración de la PWA
+└── README.md            # Documentación del proyecto
 ```
 
 ## Instalación
 
-1. Clona el repositorio en tu máquina local:
-   ```
-   git clone <URL_DEL_REPOSITORIO>
-   ```
-
-2. Navega al directorio del proyecto:
-   ```
-   cd control-pagos
-   ```
-
-3. Instala las dependencias necesarias:
-   ```
-   npm install
-   ```
+No es necesaria pero como es una PWA la puedes instalar fácilmente en tu navegador favorito.
 
 ## Ejecución
 
-Para ejecutar la aplicación, abre el archivo `src/index.html` en tu navegador web. La aplicación debería funcionar sin necesidad de un servidor.
+Accede a la url de la aplicación 
 
 ## Contribuciones
 
