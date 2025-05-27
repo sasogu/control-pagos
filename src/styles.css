@@ -81,3 +81,13 @@ button + button {
 .restore-btn:hover {
     background-color: #e0a800;
 }
+
+.entrada {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.salida {
+    color: #d32f2f;
+    font-weight: bold;
+}

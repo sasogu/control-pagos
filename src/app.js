@@ -8,19 +8,22 @@ let editIndex = null;
 function loadPayments() {
     const payments = JSON.parse(localStorage.getItem('payments')) || [];
     paymentList.innerHTML = '';
-    payments.forEach((payment, index) => {
+    // Mostrar los pagos en orden inverso (más recientes primero)
+    payments.slice().reverse().forEach((payment, index) => {
         const li = document.createElement('li');
-        li.textContent = `${payment.person} - ${payment.type} - ${payment.description}: ${payment.amount} € (${payment.month})`;
+        const signo = payment.type === "entrada" ? "+" : "-";
+        li.className = payment.type; // 'entrada' o 'salida'
+        li.textContent = `${signo} ${payment.person} - ${payment.type} - ${payment.description}: ${payment.amount} € (${payment.month})`;
         
         // Botón Editar con icono
         const btnEdit = document.createElement('button');
         btnEdit.textContent = '✏️ Editar';
-        btnEdit.onclick = () => editPayment(index);
+        btnEdit.onclick = () => editPayment(payments.length - 1 - index);
 
         // Botón Eliminar con icono
         const btnDelete = document.createElement('button');
         btnDelete.textContent = '🗑️ Eliminar';
-        btnDelete.onclick = () => deletePayment(index);
+        btnDelete.onclick = () => deletePayment(payments.length - 1 - index);
 
         li.appendChild(btnEdit);
         li.appendChild(btnDelete);
@@ -163,15 +166,19 @@ function loadPersons() {
                 return sum + (p.type === "entrada" ? Number(p.amount) : -Number(p.amount));
             }, 0);
 
+        // Determinar signo y clase
+        const signo = total >= 0 ? "+" : "-";
+        const clase = total >= 0 ? "entrada" : "salida";
+
         // Añadir al select
         const opt = document.createElement('option');
         opt.value = person;
         opt.textContent = person;
         personSelect.appendChild(opt);
 
-        // Añadir a la lista de gestión con el total
+        // Añadir a la lista de gestión con el total y color
         const li = document.createElement('li');
-        li.textContent = `${person} — ${total.toFixed(2)} €`;
+        li.innerHTML = `${person} — <span class="${clase}">${signo} ${Math.abs(total).toFixed(2)} €</span>`;
         const delBtn = document.createElement('button');
         delBtn.textContent = '❌';
         delBtn.style.marginLeft = '8px';

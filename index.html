@@ -37,15 +37,16 @@
             </select>
             <button type="submit">Agregar Pago</button>
         </form>
-        <h2>Registro de Pagos</h2>
-        <ul id="payment-list"></ul>
-        <button type="button" id="backup-btn" class="backup-btn">Descargar copia de seguridad</button>
-        <button type="button" id="restore-btn" class="restore-btn">Restaurar copia de seguridad</button>
         <input type="file" id="restore-file" accept=".json" style="display:none">
          <div id="person-manager">
             <input type="text" id="new-person" placeholder="Añadir persona">
             <button type="button" id="add-person-btn">Añadir</button>
             <ul id="person-list"></ul>
+        <h2>Registro de Pagos</h2>
+        <ul id="payment-list"></ul>
+        <button type="button" id="backup-btn" class="backup-btn">Descargar copia de seguridad</button>
+        <button type="button" id="restore-btn" class="restore-btn">Restaurar copia de seguridad</button>
+        
     </div>
     <script src="src/app.js"></script>
 <script>
@@ -53,6 +54,6 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('src/sw.js');
 }
 </script>
-<b>Versión 1.1.0 </b>
+<b>Versión 1.1.2 </b>
 </body>
 </html>
