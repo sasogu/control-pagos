@@ -1,7 +1,8 @@
 {
   "name": "Control de Pagos",
-  "short_name": "Pagos",
   "start_url": "/contro-pagos/index.html",
+  "short_name": "Pagos",
+  "scope": "/control-pagos/",
   "display": "standalone",
   "background_color": "#f4f4f4",
   "theme_color": "#d65a35",
