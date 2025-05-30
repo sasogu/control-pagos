@@ -165,6 +165,9 @@ const personList = document.getElementById('person-list');
 
 // Cargar personas desde Local Storage
 function loadPersons() {
+    // Asegúrate de que los selects existen
+    if (!payerSelect || !receiverSelect || !personList) return;
+
     const persons = JSON.parse(localStorage.getItem('persons')) || ["Joan", "David Campos", "Marga", "Enrique"];
     const payments = JSON.parse(localStorage.getItem('payments')) || [];
 
