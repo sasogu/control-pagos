@@ -58,11 +58,12 @@ function savePayments(payments) {
 
 // Eliminar pago
 function deletePayment(index) {
+    if (!confirm('¿Seguro que quieres eliminar este pago?')) return;
     const payments = JSON.parse(localStorage.getItem('payments')) || [];
     payments.splice(index, 1);
     savePayments(payments);
     loadPayments();
-    loadPersons(); // <-- Añade esta línea
+    loadPersons();
 }
 
 // Editar pago (cargar datos en el formulario)
@@ -184,8 +185,9 @@ const personList = document.getElementById('person-list');
 function loadPersons() {
     if (!payerSelect || !receiverSelect || !personList) return;
 
+    // Siempre lee los datos más recientes
     let persons = JSON.parse(localStorage.getItem('persons')) || ["Joan", "David Campos", "Marga", "Enrique"];
-    const payments = JSON.parse(localStorage.getItem('payments')) || [];
+    let payments = JSON.parse(localStorage.getItem('payments')) || [];
 
     // Contar participaciones como pagador y receptor
     const payerCount = {}, receiverCount = {};
@@ -198,11 +200,11 @@ function loadPersons() {
         if (receiverCount[p.receiver] !== undefined) receiverCount[p.receiver]++;
     });
 
-    // Ordenar para pagador y receptor por separado
+    // Ordenar para pagador y receptor por separado (¡esto es clave!)
     const personsByPayer = [...persons].sort((a, b) => payerCount[b] - payerCount[a]);
     const personsByReceiver = [...persons].sort((a, b) => receiverCount[b] - receiverCount[a]);
 
-    // Llenar selects
+    // Llenar select de pagador
     payerSelect.innerHTML = '<option value="" disabled selected>Selecciona pagador</option>';
     personsByPayer.forEach(person => {
         const opt = document.createElement('option');
@@ -211,6 +213,7 @@ function loadPersons() {
         payerSelect.appendChild(opt);
     });
 
+    // Llenar select de receptor
     receiverSelect.innerHTML = '<option value="" disabled selected>Selecciona receptor</option>';
     personsByReceiver.forEach(person => {
         const opt = document.createElement('option');
@@ -224,12 +227,8 @@ function loadPersons() {
     persons.forEach((person, idx) => {
         let total = 0;
         payments.forEach(p => {
-            if (p.payer === person) {
-                total -= Number(p.amount);
-            }
-            if (p.receiver === person) {
-                total += Number(p.amount);
-            }
+            if (p.payer === person) total -= Number(p.amount);
+            if (p.receiver === person) total += Number(p.amount);
         });
 
         const signo = total >= 0 ? "+" : "-";
@@ -270,6 +269,7 @@ if (addPersonBtn) {
 
 // Eliminar persona
 function deletePerson(idx) {
+    if (!confirm('¿Seguro que quieres eliminar esta persona?')) return;
     let persons = JSON.parse(localStorage.getItem('persons')) || ["Joan", "David Campos", "Marga", "Enrique"];
     persons.splice(idx, 1);
     savePersons(persons);
