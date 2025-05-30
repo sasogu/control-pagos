@@ -4,17 +4,20 @@ const paymentList = document.getElementById('payment-list');
 
 let editIndex = null;
 
+// Referencias a los nuevos selects
+const payerSelect = document.getElementById('payer');
+const receiverSelect = document.getElementById('receiver');
+
 // Cargar pagos desde Local Storage
 function loadPayments() {
     const payments = JSON.parse(localStorage.getItem('payments')) || [];
     paymentList.innerHTML = '';
-    // Mostrar los pagos en orden inverso (más recientes primero)
     payments.slice().reverse().forEach((payment, index) => {
         const li = document.createElement('li');
         const signo = payment.type === "entrada" ? "+" : "-";
-        li.className = payment.type; // 'entrada' o 'salida'
-        li.textContent = `${signo} ${payment.person} - ${payment.type} - ${payment.description}: ${payment.amount} € (${payment.month})`;
-        
+        li.className = payment.type;
+        li.textContent = `${signo} ${payment.payer} → ${payment.receiver} - ${payment.type} - ${payment.description}: ${payment.amount} € (${payment.month})`;
+
         // Botón Editar con icono
         const btnEdit = document.createElement('button');
         btnEdit.textContent = '✏️ Editar';
@@ -51,8 +54,10 @@ function editPayment(index) {
     const payment = payments[index];
     document.getElementById('description').value = payment.description;
     document.getElementById('amount').value = payment.amount;
-    document.getElementById('person').value = payment.person;
+    payerSelect.value = payment.payer;
+    receiverSelect.value = payment.receiver;
     document.getElementById('type').value = payment.type;
+    document.getElementById('month').value = payment.month;
     editIndex = index;
 }
 
@@ -61,12 +66,18 @@ form.addEventListener('submit', function(e) {
     e.preventDefault();
     const description = document.getElementById('description').value;
     const amount = document.getElementById('amount').value;
-    const person = document.getElementById('person').value;
+    const payer = payerSelect.value;
+    const receiver = receiverSelect.value;
     const type = document.getElementById('type').value;
     const month = document.getElementById('month').value;
 
+    if (payer === receiver) {
+        alert('El pagador y el receptor deben ser diferentes.');
+        return;
+    }
+
     const payments = JSON.parse(localStorage.getItem('payments')) || [];
-    const payment = { description, amount, person, type, month };
+    const payment = { description, amount, payer, receiver, type, month };
 
     if (editIndex !== null) {
         payments[editIndex] = payment;
@@ -76,7 +87,7 @@ form.addEventListener('submit', function(e) {
     }
     savePayments(payments);
     loadPayments();
-    loadPersons(); // <-- Añade esta línea
+    loadPersons();
     form.reset();
 
     // Selecciona de nuevo el mes actual tras resetear el formulario
@@ -156,27 +167,38 @@ const personList = document.getElementById('person-list');
 function loadPersons() {
     const persons = JSON.parse(localStorage.getItem('persons')) || ["Joan", "David Campos", "Marga", "Enrique"];
     const payments = JSON.parse(localStorage.getItem('payments')) || [];
-    personSelect.innerHTML = '<option value="" disabled selected>Selecciona persona</option>';
+
+    // Llenar selects de pagador y receptor
+    payerSelect.innerHTML = '<option value="" disabled selected>Selecciona pagador</option>';
+    receiverSelect.innerHTML = '<option value="" disabled selected>Selecciona receptor</option>';
+    persons.forEach(person => {
+        const opt1 = document.createElement('option');
+        opt1.value = person;
+        opt1.textContent = person;
+        payerSelect.appendChild(opt1);
+
+        const opt2 = document.createElement('option');
+        opt2.value = person;
+        opt2.textContent = person;
+        receiverSelect.appendChild(opt2);
+    });
+
+    // Calcular el saldo de cada persona
     personList.innerHTML = '';
     persons.forEach((person, idx) => {
-        // Calcular el monto total de la persona
-        const total = payments
-            .filter(p => p.person === person)
-            .reduce((sum, p) => {
-                return sum + (p.type === "entrada" ? Number(p.amount) : -Number(p.amount));
-            }, 0);
+        let total = 0;
+        payments.forEach(p => {
+            if (p.payer === person) {
+                total -= Number(p.amount);
+            }
+            if (p.receiver === person) {
+                total += Number(p.amount);
+            }
+        });
 
-        // Determinar signo y clase
         const signo = total >= 0 ? "+" : "-";
         const clase = total >= 0 ? "entrada" : "salida";
 
-        // Añadir al select
-        const opt = document.createElement('option');
-        opt.value = person;
-        opt.textContent = person;
-        personSelect.appendChild(opt);
-
-        // Añadir a la lista de gestión con el total y color
         const li = document.createElement('li');
         li.innerHTML = `${person} — <span class="${clase}">${signo} ${Math.abs(total).toFixed(2)} €</span>`;
         const delBtn = document.createElement('button');

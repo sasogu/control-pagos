@@ -14,9 +14,12 @@
         <form id="payment-form">
             <input type="text" id="description" placeholder="Descripción">
             <input type="number" id="amount" placeholder="Monto" required value="10">
-           <select id="person" required>
-    <option value="" disabled selected>Selecciona persona</option>
-</select>
+            <select id="payer" required>
+                <option value="" disabled selected>Selecciona pagador</option>
+            </select>
+            <select id="receiver" required>
+                <option value="" disabled selected>Selecciona receptor</option>
+            </select>
             <select id="type">
                 <option value="entrada">Entrada</option>
                 <option value="salida">Salida</option>
@@ -54,6 +57,6 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('src/sw.js');
 }
 </script>
-<b>Versión 1.1.9 </b>
+<b>Versión 1.1.10 </b>
 </body>
 </html>

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'control-pagos-v1.1.9';  // Cambia la versión según sea necesario
+const CACHE_NAME = 'control-pagos-v1.1.10';  // Cambia la versión según sea necesario
 const FILES_TO_CACHE = [
   '/',
   '/index.html',
