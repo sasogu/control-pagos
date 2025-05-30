@@ -11,8 +11,25 @@ const receiverSelect = document.getElementById('receiver');
 // Cargar pagos desde Local Storage
 function loadPayments() {
     const payments = JSON.parse(localStorage.getItem('payments')) || [];
+    const persons = JSON.parse(localStorage.getItem('persons')) || [];
+
+    // Contar participaciones de cada persona
+    const usageCount = {};
+    persons.forEach(person => usageCount[person] = 0);
+    payments.forEach(p => {
+        if (usageCount[p.payer] !== undefined) usageCount[p.payer]++;
+        if (usageCount[p.receiver] !== undefined) usageCount[p.receiver]++;
+    });
+
+    // Ordenar pagos: primero los que involucran a personas más activas
+    payments.sort((a, b) => {
+        const aCount = (usageCount[a.payer] || 0) + (usageCount[a.receiver] || 0);
+        const bCount = (usageCount[b.payer] || 0) + (usageCount[b.receiver] || 0);
+        return bCount - aCount;
+    });
+
     paymentList.innerHTML = '';
-    payments.slice().reverse().forEach((payment, index) => {
+    payments.forEach((payment, index) => {
         const li = document.createElement('li');
         const signo = payment.type === "entrada" ? "+" : "-";
         li.className = payment.type;
@@ -165,25 +182,41 @@ const personList = document.getElementById('person-list');
 
 // Cargar personas desde Local Storage
 function loadPersons() {
-    // Asegúrate de que los selects existen
     if (!payerSelect || !receiverSelect || !personList) return;
 
-    const persons = JSON.parse(localStorage.getItem('persons')) || ["Joan", "David Campos", "Marga", "Enrique"];
+    let persons = JSON.parse(localStorage.getItem('persons')) || ["Joan", "David Campos", "Marga", "Enrique"];
     const payments = JSON.parse(localStorage.getItem('payments')) || [];
 
-    // Llenar selects de pagador y receptor
-    payerSelect.innerHTML = '<option value="" disabled selected>Selecciona pagador</option>';
-    receiverSelect.innerHTML = '<option value="" disabled selected>Selecciona receptor</option>';
+    // Contar participaciones como pagador y receptor
+    const payerCount = {}, receiverCount = {};
     persons.forEach(person => {
-        const opt1 = document.createElement('option');
-        opt1.value = person;
-        opt1.textContent = person;
-        payerSelect.appendChild(opt1);
+        payerCount[person] = 0;
+        receiverCount[person] = 0;
+    });
+    payments.forEach(p => {
+        if (payerCount[p.payer] !== undefined) payerCount[p.payer]++;
+        if (receiverCount[p.receiver] !== undefined) receiverCount[p.receiver]++;
+    });
 
-        const opt2 = document.createElement('option');
-        opt2.value = person;
-        opt2.textContent = person;
-        receiverSelect.appendChild(opt2);
+    // Ordenar para pagador y receptor por separado
+    const personsByPayer = [...persons].sort((a, b) => payerCount[b] - payerCount[a]);
+    const personsByReceiver = [...persons].sort((a, b) => receiverCount[b] - receiverCount[a]);
+
+    // Llenar selects
+    payerSelect.innerHTML = '<option value="" disabled selected>Selecciona pagador</option>';
+    personsByPayer.forEach(person => {
+        const opt = document.createElement('option');
+        opt.value = person;
+        opt.textContent = person;
+        payerSelect.appendChild(opt);
+    });
+
+    receiverSelect.innerHTML = '<option value="" disabled selected>Selecciona receptor</option>';
+    personsByReceiver.forEach(person => {
+        const opt = document.createElement('option');
+        opt.value = person;
+        opt.textContent = person;
+        receiverSelect.appendChild(opt);
     });
 
     // Calcular el saldo de cada persona
