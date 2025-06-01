@@ -1,13 +1,12 @@
-const CACHE_NAME = 'control-pagos-v1.1.13';  // Cambia la versión según sea necesario
+const CACHE_NAME = 'control-pagos-v1.1.14';
 const FILES_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/src/styles.css',
-  '/src/app.js',
-  '/manifest.json',
-  // Añade aquí los iconos si los tienes, por ejemplo:
-  '/img/icon-192.png',
-  '/img/icon-512.png'
+  '/control-pagos/',
+  '/control-pagos/index.html',
+  '/control-pagos/src/styles.css',
+  '/control-pagos/src/app.js',
+  '/control-pagos/manifest.json',
+  '/control-pagos/img/icon-192.png',
+  '/control-pagos/img/icon-512.png'
 ];
 
 self.addEventListener('install', event => {
