@@ -1,4 +1,4 @@
-const CACHE_NAME = 'control-pagos-v1.1.17';
+const CACHE_NAME = 'control-pagos-v1.1.18';
 const FILES_TO_CACHE = [
   '/control-pagos/',
   '/control-pagos/index.html',

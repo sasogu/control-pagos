@@ -21,7 +21,6 @@ function loadPayments() {
         if (usageCount[p.receiver] !== undefined) usageCount[p.receiver]++;
     });
 
-    // Ordenar pagos: primero los que involucran a personas más activas
     // Creamos un array auxiliar con el índice real
     const paymentsWithIndex = payments.map((p, idx) => ({ ...p, _realIndex: idx }));
     paymentsWithIndex.sort((a, b) => {
@@ -74,9 +73,8 @@ function editPayment(index) {
     document.getElementById('amount').value = payment.amount;
     payerSelect.value = payment.payer;
     receiverSelect.value = payment.receiver;
-    document.getElementById('type').value = payment.type;
     document.getElementById('month').value = payment.month;
-    editIndex = index;
+    editIndex = index; // Guardamos el índice real
 }
 
 // Manejar el envío del formulario
@@ -86,7 +84,6 @@ form.addEventListener('submit', function(e) {
     const amount = document.getElementById('amount').value;
     const payer = payerSelect.value;
     const receiver = receiverSelect.value;
-    const type = document.getElementById('type').value;
     const month = document.getElementById('month').value;
 
     if (payer === receiver) {
@@ -95,7 +92,7 @@ form.addEventListener('submit', function(e) {
     }
 
     const payments = JSON.parse(localStorage.getItem('payments')) || [];
-    const payment = { description, amount, payer, receiver, type, month };
+    const payment = { description, amount, payer, receiver, month };
 
     if (editIndex !== null) {
         payments[editIndex] = payment;
