@@ -13,7 +13,7 @@
         <h1>Control de Pagos</h1>
         <form id="payment-form">
             <input type="text" id="description" placeholder="Descripción">
-            <input type="number" id="amount" placeholder="Monto" required value="10">
+            <input type="number" id="amount" placeholder="Monto" required value="10" step="any">
             <select id="payer" required>
                 <option value="" disabled selected>Selecciona pagador</option>
             </select>
@@ -57,6 +57,6 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('src/sw.js');
 }
 </script>
-<b>Versión 1.1.20</b>
+<b>Versión 1.1.21</b>
 </body>
 </html>

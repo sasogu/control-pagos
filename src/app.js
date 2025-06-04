@@ -81,7 +81,7 @@ function editPayment(index) {
 form.addEventListener('submit', function(e) {
     e.preventDefault();
     const description = document.getElementById('description').value;
-    const amount = document.getElementById('amount').value;
+    const amount = parseFloat(document.getElementById('amount').value);
     const payer = payerSelect.value;
     const receiver = receiverSelect.value;
     const month = document.getElementById('month').value;
