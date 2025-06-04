@@ -1,4 +1,4 @@
-const CACHE_NAME = 'control-pagos-v1.1.15';
+const CACHE_NAME = 'control-pagos-v1.1.16';
 const FILES_TO_CACHE = [
   '/control-pagos/',
   '/control-pagos/index.html',
@@ -35,10 +35,3 @@ self.addEventListener('fetch', event => {
   );
 });
 
-payments.forEach((payment, index) => {
-    const li = document.createElement('li');
-    // ... tu código ...
-    btnEdit.onclick = () => editPayment(index);
-    btnDelete.onclick = () => deletePayment(index);
-    // ... tu código ...
-});

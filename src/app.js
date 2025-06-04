@@ -38,12 +38,12 @@ function loadPayments() {
         // Botón Editar con icono
         const btnEdit = document.createElement('button');
         btnEdit.textContent = '✏️ Editar';
-        btnEdit.onclick = () => editPayment(payments.length - 1 - index);
+        btnEdit.onclick = () => editPayment(index);
 
         // Botón Eliminar con icono
         const btnDelete = document.createElement('button');
         btnDelete.textContent = '🗑️ Eliminar';
-        btnDelete.onclick = () => deletePayment(payments.length - 1 - index);
+        btnDelete.onclick = () => deletePayment(index);
 
         li.appendChild(btnEdit);
         li.appendChild(btnDelete);
