@@ -22,28 +22,28 @@ function loadPayments() {
     });
 
     // Ordenar pagos: primero los que involucran a personas más activas
-    payments.sort((a, b) => {
+    // Creamos un array auxiliar con el índice real
+    const paymentsWithIndex = payments.map((p, idx) => ({ ...p, _realIndex: idx }));
+    paymentsWithIndex.sort((a, b) => {
         const aCount = (usageCount[a.payer] || 0) + (usageCount[a.receiver] || 0);
         const bCount = (usageCount[b.payer] || 0) + (usageCount[b.receiver] || 0);
         return bCount - aCount;
     });
 
     paymentList.innerHTML = '';
-    payments.forEach((payment, index) => {
+    paymentsWithIndex.forEach((payment) => {
         const li = document.createElement('li');
-        const signo = payment.type === "entrada" ? "+" : "-";
-        li.className = payment.type;
-        li.textContent = `${signo} ${payment.payer} → ${payment.receiver} - ${payment.type} - ${payment.description}: ${payment.amount} € (${payment.month})`;
+        li.textContent = `${payment.payer} → ${payment.receiver} - ${payment.description}: ${payment.amount} € (${payment.month})`;
 
         // Botón Editar con icono
         const btnEdit = document.createElement('button');
         btnEdit.textContent = '✏️ Editar';
-        btnEdit.onclick = () => editPayment(index);
+        btnEdit.onclick = () => editPayment(payment._realIndex);
 
         // Botón Eliminar con icono
         const btnDelete = document.createElement('button');
         btnDelete.textContent = '🗑️ Eliminar';
-        btnDelete.onclick = () => deletePayment(index);
+        btnDelete.onclick = () => deletePayment(payment._realIndex);
 
         li.appendChild(btnEdit);
         li.appendChild(btnDelete);
