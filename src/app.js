@@ -131,7 +131,9 @@ const restoreFile = document.getElementById('restore-file');
 if (backupBtn) {
     backupBtn.addEventListener('click', function() {
         const payments = JSON.parse(localStorage.getItem('payments')) || [];
-        const blob = new Blob([JSON.stringify(payments, null, 2)], {type: "application/json"});
+        const persons = JSON.parse(localStorage.getItem('persons')) || [];
+        const data = { payments, persons };
+        const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -154,9 +156,11 @@ if (restoreBtn && restoreFile) {
         reader.onload = function(e) {
             try {
                 const data = JSON.parse(e.target.result);
-                if (Array.isArray(data)) {
-                    localStorage.setItem('payments', JSON.stringify(data));
+                if (data && Array.isArray(data.payments) && Array.isArray(data.persons)) {
+                    localStorage.setItem('payments', JSON.stringify(data.payments));
+                    localStorage.setItem('persons', JSON.stringify(data.persons));
                     loadPayments();
+                    loadPersons();
                     alert('Copia de seguridad restaurada correctamente.');
                 } else {
                     alert('El archivo no es válido.');
@@ -166,7 +170,6 @@ if (restoreBtn && restoreFile) {
             }
         };
         reader.readAsText(file);
-        // Limpiar input para permitir restaurar el mismo archivo varias veces
         restoreFile.value = '';
     });
 }
