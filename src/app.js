@@ -96,7 +96,7 @@ form.addEventListener('submit', function(e) {
 
     if (editIndex !== null) {
         payments[editIndex] = payment;
-        editIndex = null;
+        editIndex = null; // <-- IMPORTANTE: resetear siempre después de editar
     } else {
         payments.push(payment);
     }
