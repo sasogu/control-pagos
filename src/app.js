@@ -186,7 +186,7 @@ function loadPersons() {
     if (!payerSelect || !receiverSelect || !personList) return;
 
     // Siempre lee los datos más recientes
-    let persons = JSON.parse(localStorage.getItem('persons')) || ["Joan", "David Campos", "Marga", "Enrique"];
+    let persons = JSON.parse(localStorage.getItem('persons')) || ["Joan", "David", "Marga", "Enrique"];
     let payments = JSON.parse(localStorage.getItem('payments')) || [];
 
     // Contar participaciones como pagador y receptor
