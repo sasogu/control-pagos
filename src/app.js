@@ -186,7 +186,7 @@ function loadPersons() {
     if (!payerSelect || !receiverSelect || !personList) return;
 
     // Siempre lee los datos más recientes
-    let persons = JSON.parse(localStorage.getItem('persons')) || ["Joan", "David", "Marga", "Enrique"];
+    let persons = JSON.parse(localStorage.getItem('persons')) || [];
     let payments = JSON.parse(localStorage.getItem('payments')) || [];
 
     // Contar participaciones como pagador y receptor
@@ -255,7 +255,7 @@ if (addPersonBtn) {
     addPersonBtn.addEventListener('click', function() {
         const name = newPersonInput.value.trim();
         if (!name) return;
-        let persons = JSON.parse(localStorage.getItem('persons')) || ["Joan", "David Campos", "Marga", "Enrique"];
+        let persons = JSON.parse(localStorage.getItem('persons')) || [];
         if (!persons.includes(name)) {
             persons.push(name);
             savePersons(persons);
@@ -270,7 +270,7 @@ if (addPersonBtn) {
 // Eliminar persona
 function deletePerson(idx) {
     if (!confirm('¿Seguro que quieres eliminar esta persona?')) return;
-    let persons = JSON.parse(localStorage.getItem('persons')) || ["Joan", "David Campos", "Marga", "Enrique"];
+    let persons = JSON.parse(localStorage.getItem('persons')) || [];
     persons.splice(idx, 1);
     savePersons(persons);
     loadPersons();
